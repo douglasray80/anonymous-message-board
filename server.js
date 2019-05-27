@@ -13,7 +13,13 @@ const runner = require('./test-runner');
 
 const app = express();
 
-app.use(helmet());
+app.use(
+	helmet({
+		referrerPolicy: { policy: 'same-origin' },
+		frameguard: { action: 'same-origin' },
+		dnsPrefetchControl: { allow: false }
+	})
+);
 
 app.use(morgan('dev'));
 
