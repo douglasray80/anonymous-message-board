@@ -6,7 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const apiRoutes = require('../routes/api.js');
+const apiRoutes = require('./routes');
 const fccTestingRoutes = require('../routes/fcctesting.js');
 
 const app = express();
@@ -29,15 +29,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Sample front-end
-app.route('/b/:board/').get(function(req, res) {
+app.route('/b/:board/').get((req, res) => {
 	res.sendFile(process.cwd() + '/views/board.html');
 });
-app.route('/b/:board/:threadid').get(function(req, res) {
+app.route('/b/:board/:threadid').get((req, res) => {
 	res.sendFile(process.cwd() + '/views/thread.html');
 });
 
 //Index page (static HTML)
-app.route('/').get(function(req, res) {
+app.route('/').get((req, res) => {
 	res.sendFile(process.cwd() + '/views/index.html');
 });
 
