@@ -28,8 +28,15 @@ module.exports = app => {
 				next(err);
 			}
 		})
-		.get((req, res, next) => {
-			const board = req.params.board;
+		.get(async (req, res, next) => {
+			const board_name = req.params.board;
+
+			try {
+				const threads = await ThreadService.getBoard(board_name);
+				res.json(threads);
+			} catch (err) {
+				next(err);
+			}
 		})
 		.put((req, res, next) => {
 			const board = req.params.board;

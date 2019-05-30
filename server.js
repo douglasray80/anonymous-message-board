@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'test') {
 			console.log('Tests are not valid:');
 			console.log(error);
 		}
-	}, 1500);
+	}, 3500);
 } else {
 	app.listen(process.env.PORT || 3000, function() {
 		console.log('Listening on port ' + process.env.PORT);

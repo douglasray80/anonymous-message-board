@@ -1,8 +1,7 @@
-const chai = require('chai');
 const sinon = require('sinon');
-const ThreadService = require('../src/lib/thread/thread_service');
+const { assert } = require('chai');
 
-const assert = chai.assert;
+const ThreadService = require('../src/lib/thread/thread_service');
 
 suite('Thread Service test', function() {
 	test('has a module', function(done) {
@@ -45,16 +44,8 @@ suite('Thread Service test', function() {
 
 	suite('getBoard test', function() {
 		test('list all threads for a given board_name', function(done) {
-			const find = sinon.spy();
-			let board_name;
-
-			const MockModel = function(data) {
-				board_name = data.board_name;
-
-				return {
-					...data,
-					find
-				};
+			const MockModel = {
+				find: sinon.spy()
 			};
 
 			const threadService = ThreadService(MockModel);
@@ -62,25 +53,17 @@ suite('Thread Service test', function() {
 			threadService.getBoard('foo');
 
 			const expected = true;
-			const actual = find.calledOnce;
+			const actual = MockModel.find.calledOnce;
 
 			assert.equal(actual, expected);
-			assert.equal(board_name, 'foo');
+			done();
 		});
 	});
 
-	suite('getThread', function() {
+	suite('getThread test', function() {
 		test('gets a thread', function(done) {
-			const findById = sinon.spy();
-			let thread_id;
-
-			const MockModel = function(data) {
-				thread_id = data.thread_id;
-
-				return {
-					...data,
-					findById
-				};
+			const MockModel = {
+				findById: sinon.spy()
 			};
 
 			const threadService = ThreadService(MockModel);
@@ -88,82 +71,51 @@ suite('Thread Service test', function() {
 			threadService.getThread('some_thread_id');
 
 			const expected = true;
-			const actual = findById.calledOnce;
+			const actual = MockModel.findById.calledOnce;
 
 			assert.equal(actual, expected);
-			assert.equal(thread_id, 'some_thread_id');
+			done();
 		});
 	});
 
 	suite('updateThread', function() {
 		test('updates a thread', function(done) {
-			const findByIdAndUpdate = sinon.spy();
-			let thread_id;
-
-			const MockModel = function(data) {
-				thread_id = data.thread_id;
-
-				return {
-					...data,
-					findByIdAndUpdate
-				};
+			const MockModel = {
+				findByIdAndUpdate: sinon.spy()
 			};
 
 			const threadService = ThreadService(MockModel);
 			threadService.updateThread('some_thread_id');
 
 			const expected = true;
-			const actual = findByIdAndUpdate.calledOnce;
+			const actual = MockModel.findByIdAndUpdate.calledOnce;
 
 			assert.equal(actual, expected);
-			assert.equal(thread_id, 'some_thread_id');
+			done();
 		});
 	});
 
 	suite('deleteThread', function() {
 		test('deletes a thread', function(done) {
-			const findByIdAndDelete = sinon.spy();
-			let thread_id;
-			let delete_password;
-
-			const MockModel = function(data) {
-				thread_id = data.thread_id;
-				delete_password = data.delete_password;
-
-				return {
-					...data,
-					findByIdAndDelete
-				};
+			const MockModel = {
+				findByIdAndDelete: sinon.spy()
 			};
 
 			const threadService = ThreadService(MockModel);
 			threadService.deleteThread('some_thread_id', 'some_delete_password');
 
 			const expected = true;
-			const actual = findByIdAndDelete.calledOnce;
+			const actual = MockModel.findByIdAndDelete.calledOnce;
 
 			assert.equal(actual, expected);
-			assert.equal(thread_id, 'some_thread_id');
-			assert.equal(delete_password, 'some_delete_password');
+			done();
 		});
 	});
 
 	suite('postReply test', function() {
 		test('posts a reply to a given thread', function(done) {
-			const findByIdAndUpdate = sinon.spy();
-			let thread_id;
-			let text;
-			let delete_password;
-
-			const MockModel = function(data) {
-				thread_id = data.thread_id;
-				text = data.text;
-				delete_password = data.delete_password;
-
-				return {
-					...data,
-					findByIdAndUpdate
-				};
+			const MockModel = {
+				findByIdAndUpdate: sinon.spy()
 			};
 
 			const threadService = ThreadService(MockModel);
@@ -174,59 +126,34 @@ suite('Thread Service test', function() {
 			);
 
 			const expected = true;
-			const actual = findByIdAndUpdate.calledOnce;
+			const actual = MockModel.findByIdAndUpdate.calledOnce;
 
 			assert.equal(actual, expected);
-			assert.equal(thread_id, 'some_thread_id');
-			assert.equal(text, 'some_text');
-			assert.equal(delete_password, 'some_delete_password');
+			done();
 		});
 	});
 
 	suite('updateReply', function() {
 		test('updates a reply', function(done) {
-			const findByIdAndUpdate = sinon.spy();
-			let thread_id;
-			let reply_id;
-
-			const MockModel = function(data) {
-				thread_id = data.thread_id;
-				reply_id = data.reply_id;
-
-				return {
-					...data,
-					findByIdAndUpdate
-				};
+			const MockModel = {
+				findByIdAndUpdate: sinon.spy()
 			};
 
 			const threadService = ThreadService(MockModel);
 			threadService.updateReply('some_thread_id', 'some_reply_id');
 
 			const expected = true;
-			const actual = findByIdAndUpdate.calledOnce;
+			const actual = MockModel.findByIdAndUpdate.calledOnce;
 
 			assert.equal(actual, expected);
-			assert.equal(thread_id, 'some_thread_id');
-			assert.equal(reply_id, 'some_reply_id');
+			done();
 		});
 	});
 
 	suite('deleteReply test', function() {
 		test('deletes a reply', function(done) {
-			const findByIdAndUpdate = sinon.spy();
-			let thread_id;
-			let reply_id;
-			let delete_password;
-
-			const MockModel = function(data) {
-				thread_id = data.thread_id;
-				reply_id = data.reply_id;
-				delete_password = data.delete_password;
-
-				return {
-					...data,
-					findByIdAndUpdate
-				};
+			const MockModel = {
+				findByIdAndUpdate: sinon.spy()
 			};
 
 			const threadService = ThreadService(MockModel);
@@ -237,12 +164,10 @@ suite('Thread Service test', function() {
 			);
 
 			const expected = true;
-			const actual = findByIdAndUpdate.calledOnce;
+			const actual = MockModel.findByIdAndUpdate.calledOnce;
 
 			assert.equal(actual, expected);
-			assert.equal(thread_id, 'some_thread_id');
-			assert.equal(reply_id, 'some_reply_id');
-			assert.equal(delete_password, 'some_delete_password');
+			done();
 		});
 	});
 });
