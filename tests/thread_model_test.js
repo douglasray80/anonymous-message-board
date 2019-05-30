@@ -6,7 +6,7 @@ const assert = chai.assert;
 
 mongoose.connect(process.env.MONGO_TEST_DB, { useNewUrlParser: true });
 
-suite('Thread model test', () => {
+suite('Thread Model test', () => {
 	before(async () => {
 		await Thread.deleteMany();
 	});
