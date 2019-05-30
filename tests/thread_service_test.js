@@ -42,4 +42,32 @@ suite('ThreadService test', function() {
 			done();
 		});
 	});
+
+	suite('getThread', function() {
+		test('gets a thread', function(done) {});
+	});
+
+	suite('updateThread', function() {
+		test('updates a thread', function(done) {});
+	});
+
+	suite('deleteThread', function() {
+		test('deletes a thread', function(done) {});
+	});
+
+	suite('getThreads test', function() {
+		test('list all threads for a given board_name', function(done) {});
+	});
+
+	suite('postReply test', function() {
+		test('posts a reply to a given thread', function(done) {});
+	});
+
+	suite('updateReply', function() {
+		test('updates a reply', function(done) {});
+	});
+
+	suite('deleteReply test', function() {
+		test('deletes a reply', function(done) {});
+	});
 });
