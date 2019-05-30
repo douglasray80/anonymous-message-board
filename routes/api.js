@@ -7,7 +7,7 @@
  */
 
 'use strict';
-const ThreadService = require('./lib/thread');
+const ThreadService = require('../lib/thread');
 
 module.exports = app => {
 	app
@@ -20,10 +20,11 @@ module.exports = app => {
 			try {
 				const threads = await ThreadService.createThread(
 					board,
-					delete_password,
-					text
+					text,
+					delete_password
 				);
 				res.json(threads);
+				// res.redirect(`/b/${board}`);
 			} catch (err) {
 				next(err);
 			}
@@ -38,8 +39,14 @@ module.exports = app => {
 				next(err);
 			}
 		})
-		.put((req, res, next) => {
-			const board = req.params.board;
+		.put(async (req, res, next) => {
+			const thread_id = req.body.thread_id;
+			try {
+				const thread = await ThreadService.updateThread(thread_id);
+				res.json(thread);
+			} catch (err) {
+				next(err);
+			}
 		})
 		.delete((req, res, next) => {
 			const board = req.params.board;
