@@ -16,16 +16,38 @@ chai.use(chaiHttp);
 suite('Functional Tests', function() {
 	suite('API ROUTING FOR /api/threads/:board', function() {
 		suite('POST', function() {
-			test('posts a thread', function(done) {
+			test('posts a thread with text and delete_password fields', function(done) {
 				chai
 					.request(server)
 					.post('/api/threads/test_board')
 					.send({
 						text: 'some text',
-						delete_password: 'password'
+						delete_password: 'pass'
 					})
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
+						done();
+					});
+			});
+
+			test('posts a thread without delete_password field', function(done) {
+				chai
+					.request(server)
+					.post('/api/threads/test_board')
+					.send({ text: 'some text' })
+					.end(function(err, res) {
+						assert.equal(res.status, 500);
+						done();
+					});
+			});
+
+			test('posts a thread without text field', function(done) {
+				chai
+					.request(server)
+					.post('/api/threads/test_board')
+					.send({ delete_password: 'some password' })
+					.end(function(err, res) {
+						assert.equal(res.status, 500);
 						done();
 					});
 			});
@@ -37,7 +59,7 @@ suite('Functional Tests', function() {
 					.request(server)
 					.get('/api/threads/test_board')
 					.send({
-						thread_id: '12345'
+						thread_id: '5cf0313018801237927126c3'
 					})
 					.end(function(err, res) {
 						// assertions go here...
@@ -48,17 +70,33 @@ suite('Functional Tests', function() {
 		});
 
 		suite('DELETE', function() {
-			test('deletes a thread', function(done) {
+			test('deletes a thread successfully', function(done) {
 				chai
 					.request(server)
 					.delete('/api/threads/test_board')
 					.send({
-						thread_id: '12345',
-						delete_password: 'some password'
+						thread_id: '5cf03698db993b3cf768c6ea',
+						delete_password: 'password'
 					})
 					.end(function(err, res) {
 						// assertions go here...
 						assert.equal(res.status, 200);
+						done();
+					});
+			});
+
+			test('sends delete request with incorrect password', function(done) {
+				chai
+					.request(server)
+					.delete('/api/threads/test_board')
+					.send({
+						thread_id: '5cf03942b2caf142a1cac991',
+						delete_password: 'wrong'
+					})
+					.end(function(err, res) {
+						// assertions go here...
+						assert.equal(res.status, 200);
+						assert.equal(res.text, 'incorrect password');
 						done();
 					});
 			});
@@ -70,7 +108,7 @@ suite('Functional Tests', function() {
 					.request(server)
 					.put('/api/threads/test_board')
 					.send({
-						thread_id: '12345'
+						thread_id: '5cf0313018801237927126c3'
 					})
 					.end(function(err, res) {
 						// assertions go here...
@@ -88,9 +126,9 @@ suite('Functional Tests', function() {
 					.request(server)
 					.post('/api/replies/test_board')
 					.send({
-						thread_id: '12345',
+						thread_id: '5cf0313018801237927126c3',
 						text: 'some reply text',
-						delete_password: 'some password'
+						delete_password: 'pass'
 					})
 					.end(function(err, res) {
 						// assertions go here...
@@ -104,10 +142,8 @@ suite('Functional Tests', function() {
 			test('gets all replies on a given thread', function(done) {
 				chai
 					.request(server)
-					.get('/api/replies/test_board')
-					.send({
-						thread_id: '12345'
-					})
+					.get('/api/replies/test_board?thread_id=5cf0313018801237927126c3')
+					.send({})
 					.end(function(err, res) {
 						// assertions go here...
 						assert.equal(res.status, 200);
@@ -122,8 +158,8 @@ suite('Functional Tests', function() {
 					.request(server)
 					.put('/api/replies/test_board')
 					.send({
-						thread_id: '12345',
-						reply_id: '54321'
+						thread_id: '5cf0313018801237927126c3',
+						reply_id: '5cf03985ceed2f42dd35907e'
 					})
 					.end(function(err, res) {
 						// assertions go here...

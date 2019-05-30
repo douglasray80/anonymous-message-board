@@ -26,13 +26,13 @@
     <div id='boardDisplay'></div>
     
     <hr style='margin: 50px; margin-top: 200px'>
-    
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
             crossorigin="anonymous"></script>
     <script>
       $(function() {
         var currentBoard = window.location.pathname.slice(3,-1);
+        console.log(currentBoard)
         var url = "/api/threads/"+currentBoard;
         $('#boardTitle').text('Welcome to '+window.location.pathname)
         $.ajax({
