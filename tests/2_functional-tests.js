@@ -66,12 +66,31 @@ suite('Functional Tests', function() {
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.type, 'application/json');
+						assert.notProperty(res.body[0], 'reported');
+						assert.notProperty(res.body[0], 'delete_password');
+						assert.notProperty(res.body[0].replies, 'reported');
+						assert.notProperty(res.body[0].replies, 'delete_password');
 						done();
 					});
 			});
 		});
 
 		suite('DELETE', function() {
+			test('sends delete request with incorrect password', function(done) {
+				chai
+					.request(server)
+					.delete('/api/threads/test_board')
+					.send({
+						thread_id: '5cf10027d97e0d2561d3717e',
+						delete_password: 'wrong'
+					})
+					.end(function(err, res) {
+						assert.equal(res.status, 200);
+						assert.equal(res.text, 'incorrect password');
+						done();
+					});
+			});
+
 			test('deletes a thread successfully', function(done) {
 				chai
 					.request(server)
@@ -83,21 +102,6 @@ suite('Functional Tests', function() {
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.text, 'success');
-						done();
-					});
-			});
-
-			test('sends delete request with incorrect password', function(done) {
-				chai
-					.request(server)
-					.delete('/api/threads/test_board')
-					.send({
-						thread_id: '5cf0ffd79bfd172506b59028',
-						delete_password: 'wrong'
-					})
-					.end(function(err, res) {
-						assert.equal(res.status, 200);
-						assert.equal(res.text, 'incorrect password');
 						done();
 					});
 			});
@@ -147,6 +151,8 @@ suite('Functional Tests', function() {
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.type, 'application/json');
+						assert.notProperty(res.body, 'reported');
+						assert.notProperty(res.body, 'delete_password');
 						done();
 					});
 			});

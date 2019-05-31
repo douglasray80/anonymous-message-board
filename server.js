@@ -29,8 +29,6 @@ app.use(
 	})
 );
 
-app.use(morgan('dev'));
-
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({ origin: '*' })); //USED FOR FCC TESTING PURPOSES ONLY!
@@ -79,6 +77,8 @@ app.listen(process.env.PORT || 3000, function() {
 				console.log(error);
 			}
 		}, 1500);
+	} else {
+		app.use(morgan('dev'));
 	}
 });
 
