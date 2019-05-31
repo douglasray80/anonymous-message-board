@@ -5,13 +5,15 @@
 //  *       -----[Keep the tests in the same order!]-----
 //  *       (if additional are added, keep them at the very end!)
 //  */
-
+const mongoose = require('mongoose');
 const chaiHttp = require('chai-http');
 const chai = require('chai');
 const assert = chai.assert;
-const server = require('../server');
 
 chai.use(chaiHttp);
+
+const server = require('../server');
+const Thread = require('../lib/thread/thread_model');
 
 suite('Functional Tests', function() {
 	suite('API ROUTING FOR /api/threads/:board', function() {
@@ -59,11 +61,11 @@ suite('Functional Tests', function() {
 					.request(server)
 					.get('/api/threads/test_board')
 					.send({
-						thread_id: '5cf0313018801237927126c3'
+						thread_id: '5cf0ffd79bfd172506b59028'
 					})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
+						assert.equal(res.type, 'application/json');
 						done();
 					});
 			});
@@ -75,12 +77,12 @@ suite('Functional Tests', function() {
 					.request(server)
 					.delete('/api/threads/test_board')
 					.send({
-						thread_id: '5cf03698db993b3cf768c6ea',
-						delete_password: 'password'
+						thread_id: '5cf10027d97e0d2561d3717e',
+						delete_password: 'pass'
 					})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
+						assert.equal(res.text, 'success');
 						done();
 					});
 			});
@@ -90,11 +92,10 @@ suite('Functional Tests', function() {
 					.request(server)
 					.delete('/api/threads/test_board')
 					.send({
-						thread_id: '5cf03942b2caf142a1cac991',
+						thread_id: '5cf0ffd79bfd172506b59028',
 						delete_password: 'wrong'
 					})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
 						assert.equal(res.text, 'incorrect password');
 						done();
@@ -108,11 +109,11 @@ suite('Functional Tests', function() {
 					.request(server)
 					.put('/api/threads/test_board')
 					.send({
-						thread_id: '5cf0313018801237927126c3'
+						thread_id: '5cf0ffefbab1b9251c951e44'
 					})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
+						assert.equal(res.text, 'success');
 						done();
 					});
 			});
@@ -126,12 +127,11 @@ suite('Functional Tests', function() {
 					.request(server)
 					.post('/api/replies/test_board')
 					.send({
-						thread_id: '5cf0313018801237927126c3',
+						thread_id: '5cf0ffefbab1b9251c951e44',
 						text: 'some reply text',
 						delete_password: 'pass'
 					})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
 						done();
 					});
@@ -142,11 +142,11 @@ suite('Functional Tests', function() {
 			test('gets all replies on a given thread', function(done) {
 				chai
 					.request(server)
-					.get('/api/replies/test_board?thread_id=5cf0313018801237927126c3')
+					.get('/api/replies/test_board?thread_id=5cf0ffefbab1b9251c951e44')
 					.send({})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
+						assert.equal(res.type, 'application/json');
 						done();
 					});
 			});
@@ -158,30 +158,46 @@ suite('Functional Tests', function() {
 					.request(server)
 					.put('/api/replies/test_board')
 					.send({
-						thread_id: '5cf0313018801237927126c3',
-						reply_id: '5cf03985ceed2f42dd35907e'
+						thread_id: '5cf0ffefbab1b9251c951e44',
+						reply_id: '5cf10028d97e0d2561d3717f'
 					})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
+						assert.equal(res.text, 'success');
 						done();
 					});
 			});
 		});
 
 		suite('DELETE', function() {
+			test('sends a delete request with incorrect password', function(done) {
+				chai
+					.request(server)
+					.delete('/api/replies/test_board')
+					.send({
+						thread_id: '5cf0ffefbab1b9251c951e44',
+						reply_id: '5cf1002ec1d3e52576676e90',
+						delete_password: 'wrong'
+					})
+					.end(function(err, res) {
+						assert.equal(res.status, 200);
+						assert.equal(res.text, 'incorrect password');
+						done();
+					});
+			});
+
 			test('deletes a reply', function(done) {
 				chai
 					.request(server)
 					.delete('/api/replies/test_board')
 					.send({
-						thread_id: '12345',
-						reply_id: '54321',
-						delete_password: 'some password'
+						thread_id: '5cf0ffefbab1b9251c951e44',
+						reply_id: '5cf1002ec1d3e52576676e90',
+						delete_password: 'pass'
 					})
 					.end(function(err, res) {
-						// assertions go here...
 						assert.equal(res.status, 200);
+						assert.equal(res.text, 'success');
 						done();
 					});
 			});
